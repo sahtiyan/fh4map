@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
 	
 	while true do
 		Citizen.Wait(100)
-		
+
 		if IsPauseMenuActive() or IsBigmapActive() or IsRadarHidden() then
 			if not uiHidden then
 				SendNUIMessage({
