@@ -1,42 +1,31 @@
-posX = 0.01
-posY = 0.0-- 0.0152
-
-width = 0.183
-height = 0.32--0.354
-
+local uiHidden = false
 Citizen.CreateThread(function()
+
 	RequestStreamedTextureDict("circlemap", false)
 	while not HasStreamedTextureDictLoaded("circlemap") do
-		Wait(100)
+		Citizen.Wait(100)
 	end
 
 	AddReplaceTexture("platform:/textures/graphics", "radarmasksm", "circlemap", "radarmasksm")
 
 	SetMinimapClipType(1)
-	SetMinimapComponentPosition('minimap', 'L', 'B', posX, posY, width, height)
-	--SetMinimapComponentPosition('minimap_mask', 'L', 'B', 0.0, 0.032, 0.101, 0.259)
-	SetMinimapComponentPosition('minimap_mask', 'L', 'B', posX, posY, width, height)
-	SetMinimapComponentPosition('minimap_blur', 'L', 'B', 0.012, 0.022, 0.256, 0.337)
-
-    local minimap = RequestScaleformMovie("minimap")
-    SetRadarBigmapEnabled(true, false)
-    Wait(0)
+	SetBlipAlpha(GetNorthRadarBlip(), 0)
+	SetMinimapComponentPosition('minimap', 'L', 'B', 0.030, -0.07, 0.140, 0.245)
+	SetMinimapComponentPosition('minimap_mask', 'L', 'B', 0.030, 0.07, 0.500, 0.175)
+	SetMinimapComponentPosition('minimap_blur', 'L', 'B', 0.009, -0.015, 0.190, 0.290)
+	
+	SetRadarBigmapEnabled(true, false)
+    Citizen.Wait(0)
     SetRadarBigmapEnabled(false, false)
-
-    while true do
-        Wait(0)
-        BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
-        ScaleformMovieMethodAddParamInt(3)
-        EndScaleformMovieMethod()
-    end
-end)
-
-local uiHidden = false
-
-Citizen.CreateThread(function()
+	
 	while true do
-		Wait(0)
-		if IsBigmapActive() or IsRadarHidden() then
+		Citizen.Wait(100)
+		
+		local menuActive = IsPauseMenuActive()
+		local bigActive = IsBigmapActive()
+		local radarDisable = IsRadarHidden()
+
+		if menuActive or bigActive or radarDisable then
 			if not uiHidden then
 				SendNUIMessage({
 					action = "hideUI"
@@ -49,5 +38,22 @@ Citizen.CreateThread(function()
 			})
 			uiHidden = false
 		end
+	end
+end)
+  
+Citizen.CreateThread(function()
+	Citizen.Wait(100)
+
+	while true do
+
+		local radarEnabled = IsRadarEnabled()
+
+		if not IsPedInAnyVehicle(PlayerPedId()) and radarEnabled then
+			DisplayRadar(false)
+		elseif IsPedInAnyVehicle(PlayerPedId()) and not radarEnabled then
+			DisplayRadar(true)
+		end
+
+		Citizen.Wait(500)
 	end
 end)
