@@ -4,7 +4,6 @@ https://github.com/qalle-git/radar-while-driving/blob/master/client/main.lua
 
 https://github.com/beetle2k/b2k-minimap
 
-![Desktop Screenshot 2021 03 28 - 00 42 09 57](https://user-images.githubusercontent.com/81315836/112736114-55433680-8f61-11eb-8112-e8c932e74342.png)
 
 Copyright (C) 2020 Akkariin
 
