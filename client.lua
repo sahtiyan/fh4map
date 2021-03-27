@@ -21,11 +21,7 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(100)
 		
-		local menuActive = IsPauseMenuActive()
-		local bigActive = IsBigmapActive()
-		local radarDisable = IsRadarHidden()
-
-		if menuActive or bigActive or radarDisable then
+		if IsPauseMenuActive() or IsBigmapActive() or IsRadarHidden() then
 			if not uiHidden then
 				SendNUIMessage({
 					action = "hideUI"
