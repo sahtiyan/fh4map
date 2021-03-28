@@ -10,9 +10,9 @@ Citizen.CreateThread(function()
 
 	SetMinimapClipType(1)
 	SetBlipAlpha(GetNorthRadarBlip(), 0)
-	SetMinimapComponentPosition('minimap', 'L', 'B', 0.030, -0.07, 0.140, 0.245)
-	SetMinimapComponentPosition('minimap_mask', 'L', 'B', 0.030, 0.07, 0.500, 0.175)
-	SetMinimapComponentPosition('minimap_blur', 'L', 'B', 0.009, -0.015, 0.190, 0.290)
+	SetMinimapComponentPosition('minimap', 'L', 'B', 0.0, -0.07, 0.140, 0.245)
+	SetMinimapComponentPosition('minimap_mask', 'L', 'B', 0.0, 0.07, 0.500, 0.175)
+	SetMinimapComponentPosition('minimap_blur', 'L', 'B', -0.015, -0.015, 0.190, 0.290)
 	
 	SetRadarBigmapEnabled(true, false)
     Citizen.Wait(0)
@@ -20,8 +20,10 @@ Citizen.CreateThread(function()
 	
 	while true do
 		Citizen.Wait(100)
-
-		if IsPauseMenuActive() or IsBigmapActive() or IsRadarHidden() then
+		if IsBigmapActive() or IsBigmapFull() then
+            SetBigmapActive(false, false)
+        end
+		if IsPauseMenuActive() or IsRadarHidden() then
 			if not uiHidden then
 				SendNUIMessage({
 					action = "hideUI"
